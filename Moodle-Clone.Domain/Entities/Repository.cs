@@ -8,5 +8,5 @@ public class Repository
     public List<Assignment> Assignments { get; set; } = new();
     public User Owner { get; set; } = default!;
     public string OwnerId { get; set; } = default!;
-
+    public List<User> Students { get; set; } = new();
 }

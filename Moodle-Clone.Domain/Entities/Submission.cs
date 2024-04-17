@@ -7,4 +7,5 @@ public class Submission
     public string FilePath { get; set; } = default!;
     public Assignment assignment { get; set; } = default!;
     public int AssignmentId { get; set; } = default!;
+    public string StudentId { get; set; } = default!;
 }
