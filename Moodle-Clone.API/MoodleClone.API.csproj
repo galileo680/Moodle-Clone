@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Moodle-Clone.Application\Moodle-Clone.Application.csproj" />
-    <ProjectReference Include="..\Moodle-Clone.Infrastructure\Moodle-Clone.Infrastructure.csproj" />
+    <ProjectReference Include="..\Moodle-Clone.Application\MoodleClone.Application.csproj" />
+    <ProjectReference Include="..\Moodle-Clone.Infrastructure\MoodleClone.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

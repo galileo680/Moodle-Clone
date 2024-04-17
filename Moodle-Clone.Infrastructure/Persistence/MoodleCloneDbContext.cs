@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Moodle_Clone.Domain.Entities;
+using MoodleClone.Domain.Entities;
 
-namespace Moodle_Clone.Infrastructure.Persistence;
+namespace MoodleClone.Infrastructure.Persistence;
 
 internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> options)
     : IdentityDbContext<User>(options)
@@ -17,12 +17,12 @@ internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> optio
 
         modelBuilder.Entity<Repository>()
             .HasMany(r => r.Assignments)
-            .WithOne()
+            .WithOne(a => a.Repository)
             .HasForeignKey(a => a.RepositoryId);
 
         modelBuilder.Entity<Assignment>()
             .HasMany(a => a.Submissions)
-            .WithOne()
+            .WithOne(s => s.Assignment)
             .HasForeignKey(s => s.AssignmentId);
 
         modelBuilder.Entity<User>()

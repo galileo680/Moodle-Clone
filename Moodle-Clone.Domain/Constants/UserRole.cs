@@ -1,4 +1,4 @@
-﻿namespace Moodle_Clone.Domain.Constants;
+﻿namespace MoodleClone.Domain.Constants;
 
 public class UserRole
 {

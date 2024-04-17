@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moodle-Clone.API", "Moodle-Clone.API\Moodle-Clone.API.csproj", "{7DBAE8C3-8FC5-47B0-B1DD-96280291D273}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleClone.API", "Moodle-Clone.API\MoodleClone.API.csproj", "{7DBAE8C3-8FC5-47B0-B1DD-96280291D273}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moodle-Clone.Domain", "Moodle-Clone.Domain\Moodle-Clone.Domain.csproj", "{43009683-F423-4637-8D11-00C888BEC018}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleClone.Domain", "Moodle-Clone.Domain\MoodleClone.Domain.csproj", "{43009683-F423-4637-8D11-00C888BEC018}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moodle-Clone.Application", "Moodle-Clone.Application\Moodle-Clone.Application.csproj", "{4CA7DB6A-4B0E-42DF-830B-A8775EA175A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleClone.Application", "Moodle-Clone.Application\MoodleClone.Application.csproj", "{4CA7DB6A-4B0E-42DF-830B-A8775EA175A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moodle-Clone.Infrastructure", "Moodle-Clone.Infrastructure\Moodle-Clone.Infrastructure.csproj", "{A36BC635-F211-4CE0-BD4A-70A0543E24FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleClone.Infrastructure", "Moodle-Clone.Infrastructure\MoodleClone.Infrastructure.csproj", "{A36BC635-F211-4CE0-BD4A-70A0543E24FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

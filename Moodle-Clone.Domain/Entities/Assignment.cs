@@ -1,4 +1,4 @@
-﻿namespace Moodle_Clone.Domain.Entities;
+﻿namespace MoodleClone.Domain.Entities;
 
 public class Assignment
 {
@@ -7,6 +7,6 @@ public class Assignment
     public string Description { get; set; } = default!;
     public DateOnly Deadline { get; set; }
     public List<Submission> Submissions { get; set; } = new();
-    public Repository repository { get; set; } = default!;
+    public Repository Repository { get; set; } = default!;
     public int RepositoryId { get; set; } = default!;
 }

@@ -1,4 +1,4 @@
-using Moodle_Clone.Infrastructure.Extensions;
+using MoodleClone.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

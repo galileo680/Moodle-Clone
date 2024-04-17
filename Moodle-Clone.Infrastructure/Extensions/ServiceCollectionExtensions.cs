@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Moodle_Clone.Infrastructure.Persistence;
+using MoodleClone.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Moodle_Clone.Domain.Entities;
+using MoodleClone.Domain.Entities;
 
-namespace Moodle_Clone.Infrastructure.Extensions;
+namespace MoodleClone.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {

@@ -9,7 +9,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Moodle-Clone.Domain\Moodle-Clone.Domain.csproj" />
+    <ProjectReference Include="..\Moodle-Clone.Domain\MoodleClone.Domain.csproj" />
   </ItemGroup>
 
 </Project>

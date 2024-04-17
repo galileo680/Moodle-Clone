@@ -16,7 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Moodle-Clone.Application\Moodle-Clone.Application.csproj" />
+    <ProjectReference Include="..\Moodle-Clone.Application\MoodleClone.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

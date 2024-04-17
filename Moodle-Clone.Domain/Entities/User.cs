@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Moodle_Clone.Domain.Entities;
+namespace MoodleClone.Domain.Entities;
 
 public class User : IdentityUser
 {
