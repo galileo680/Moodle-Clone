@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Moodle_Clone.Infrastructure.Migrations
+namespace MoodleClone.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration

@@ -8,7 +8,7 @@ using MoodleClone.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Moodle_Clone.Infrastructure.Migrations
+namespace MoodleClone.Infrastructure.Migrations
 {
     [DbContext(typeof(MoodleCloneDbContext))]
     partial class MoodleCloneDbContextModelSnapshot : ModelSnapshot

@@ -9,7 +9,7 @@ using MoodleClone.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Moodle_Clone.Infrastructure.Migrations
+namespace MoodleClone.Infrastructure.Migrations
 {
     [DbContext(typeof(MoodleCloneDbContext))]
     [Migration("20240417130936_init")]
