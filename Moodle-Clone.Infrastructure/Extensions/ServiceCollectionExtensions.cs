@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MoodleClone.Infrastructure.Persistence;
 using MoodleClone.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using MoodleClone.Infrastructure.Seeder;
 
 
 namespace MoodleClone.Infrastructure.Extensions;
@@ -18,11 +19,15 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(connectionString)
                 .EnableSensitiveDataLogging());
 
-        services.AddIdentityApiEndpoints<User>()
+        /*services.AddIdentityApiEndpoints<User>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<MoodleCloneDbContext>();*/
+
+        services.AddDefaultIdentity<User>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MoodleCloneDbContext>();
 
-
+        services.AddScoped<IRepositorySeeder, RepositorySeeder>();
 
     }
 }

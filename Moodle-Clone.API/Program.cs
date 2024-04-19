@@ -1,6 +1,7 @@
 using MoodleClone.API.Extensions;
 using MoodleClone.Domain.Entities;
 using MoodleClone.Infrastructure.Extensions;
+using MoodleClone.Infrastructure.Seeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,11 @@ builder.AddPresentation();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+/*var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<IRepositorySeeder>();
+
+await seeder.Seed();*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
