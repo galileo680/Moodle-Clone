@@ -17,10 +17,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-var scope = app.Services.CreateScope();
+/*var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<IRepositorySeeder>();
 
-await seeder.Seed();
+await seeder.Seed();*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
