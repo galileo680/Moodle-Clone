@@ -1,6 +1,8 @@
-﻿namespace MoodleClone.Domain.Entities;
+﻿using MoodleClone.Domain.Entities;
 
-public class Repository
+namespace MoodleClone.Application.Repositories.Dtos;
+
+public class CourseDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;

@@ -1,6 +1,6 @@
 ﻿namespace MoodleClone.Infrastructure.Seeder;
 
-public interface IRepositorySeeder
+public interface ICourseSeeder
 {
     Task Seed();
 }

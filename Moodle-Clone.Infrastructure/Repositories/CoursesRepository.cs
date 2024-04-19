@@ -5,30 +5,30 @@ using MoodleClone.Infrastructure.Persistence;
 
 namespace MoodleClone.Infrastructure.Repositories;
 
-internal class RepositoriesRepository(MoodleCloneDbContext dbContext) : IRepositoriesRepository
+internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepository
 {
-    public async Task<int> Create(Repository entity)
+    public async Task<int> Create(Course entity)
     {
-        dbContext.Repositories.Add(entity);
+        dbContext.Courses.Add(entity);
         await dbContext.SaveChangesAsync();
         return entity.Id;
     }
 
-    public async Task Delete(Repository entity)
+    public async Task Delete(Course entity)
     {
         dbContext.Remove(entity);
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Repository>> GetAllAsync()
+    public async Task<IEnumerable<Course>> GetAllAsync()
     {
-        var repositories = await dbContext.Repositories.ToListAsync();
+        var repositories = await dbContext.Courses.ToListAsync();
         return repositories;
     }
 
-    public async Task<Repository?> GetByIdAsync(int id)
+    public async Task<Course?> GetByIdAsync(int id)
     {
-        var repository = await dbContext.Repositories
+        var repository = await dbContext.Courses
             .Include(r => r.Assignments)
             .ThenInclude(a => a.Submissions)
             .FirstOrDefaultAsync(x => x.Id == id);

@@ -30,7 +30,7 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<MoodleCloneDbContext>();
 
 
-        services.AddScoped<IRepositorySeeder, RepositorySeeder>();
-        services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
+        services.AddScoped<ICourseSeeder, CourseSeeder>();
+        services.AddScoped<ICoursesRepository, CoursesRepository>();
     }
 }

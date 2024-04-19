@@ -7,6 +7,6 @@ public class Assignment
     public string Description { get; set; } = default!;
     public DateTime Deadline { get; set; }
     public List<Submission> Submissions { get; set; } = new();
-    public Repository Repository { get; set; } = default!;
-    public int RepositoryId { get; set; } = default!;
+    public Course Course { get; set; } = default!;
+    public int CourseId { get; set; } = default!;
 }

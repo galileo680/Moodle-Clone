@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoodleClone.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using MoodleClone.Infrastructure.Persistence;
 namespace MoodleClone.Infrastructure.Migrations
 {
     [DbContext(typeof(MoodleCloneDbContext))]
-    partial class MoodleCloneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240419201358_RepositoryRenamedToCourse")]
+    partial class RepositoryRenamedToCourse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,6 +280,7 @@ namespace MoodleClone.Infrastructure.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -300,6 +304,7 @@ namespace MoodleClone.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
