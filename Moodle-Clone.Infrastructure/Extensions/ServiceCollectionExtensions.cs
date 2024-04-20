@@ -21,13 +21,13 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(connectionString)
                 .EnableSensitiveDataLogging());
 
-        /*services.AddIdentityApiEndpoints<User>()
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<MoodleCloneDbContext>();*/
-
-        services.AddDefaultIdentity<User>()
+        services.AddIdentityApiEndpoints<User>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MoodleCloneDbContext>();
+
+        /*services.AddDefaultIdentity<User>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<MoodleCloneDbContext>();*/
 
 
         services.AddScoped<ICourseSeeder, CourseSeeder>();
