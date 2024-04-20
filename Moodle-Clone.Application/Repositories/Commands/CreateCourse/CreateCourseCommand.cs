@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace MoodleClone.Application.Repositories.Commands;
+namespace MoodleClone.Application.Repositories.Commands.CreateCourse;
 
 public class CreateCourseCommand : IRequest<int>
 {
