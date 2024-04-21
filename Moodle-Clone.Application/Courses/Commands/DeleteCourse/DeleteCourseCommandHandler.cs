@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MoodleClone.Domain.Exceptions;
 using MoodleClone.Domain.Repositories;
 
 namespace MoodleClone.Application.Courses.Commands.DeleteCourse;
@@ -9,8 +10,9 @@ public class DeleteCourseCommandHandler(ICoursesRepository coursesRepository) : 
     {
         var course = await coursesRepository.GetByIdAsync(request.Id);
         if (course is null)
-        {
+            throw new NotFoundException(nameof(course), request.Id.ToString());
 
-        }
+
+        await coursesRepository.Delete(course);
     }
 }
