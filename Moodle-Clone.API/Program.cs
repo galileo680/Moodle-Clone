@@ -1,4 +1,5 @@
 using MoodleClone.API.Extensions;
+using MoodleClone.Application.Extensions;
 using MoodleClone.Domain.Entities;
 using MoodleClone.Infrastructure.Extensions;
 using MoodleClone.Infrastructure.Seeder;
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddSwaggerGen();
 
 builder.AddPresentation();
+builder.Services.AddAplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();

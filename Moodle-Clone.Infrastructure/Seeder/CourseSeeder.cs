@@ -5,7 +5,7 @@ using MoodleClone.Infrastructure.Persistence;
 
 namespace MoodleClone.Infrastructure.Seeder;
 
-internal class RepositorySeeder(MoodleCloneDbContext dbContext) : IRepositorySeeder
+internal class CourseSeeder(MoodleCloneDbContext dbContext) : ICourseSeeder
 {
     public async Task Seed()
     {
@@ -25,9 +25,9 @@ internal class RepositorySeeder(MoodleCloneDbContext dbContext) : IRepositorySee
                 await dbContext.SaveChangesAsync();
             }*/
 
-            if (!dbContext.Repositories.Any())
+            if (!dbContext.Courses.Any())
             {
-                dbContext.Repositories.AddRange(GetRepositories());
+                dbContext.Courses.AddRange(GetRepositories());
                 await dbContext.SaveChangesAsync();
             }
 
@@ -65,18 +65,18 @@ internal class RepositorySeeder(MoodleCloneDbContext dbContext) : IRepositorySee
         };
     }*/
 
-    private IEnumerable<Repository> GetRepositories()
+    private IEnumerable<Course> GetRepositories()
     {
-        return new List<Repository>
+        return new List<Course>
         {
-            new Repository { Name = "Calculus Course", Description = "Repository for the Calculus course", OwnerId = "1" }
+            new Course { Name = "Calculus Course", Description = "Repository for the Calculus course", OwnerId = "1" }
         };
     }
     private IEnumerable<Assignment> GetAssignments()
     {
         return new List<Assignment>
         {
-            new Assignment { Name = "Integration", Description = "Submit your integration assignment.", Deadline = DateTime.UtcNow.AddDays(30), RepositoryId = 1 }
+            new Assignment { Name = "Integration", Description = "Submit your integration assignment.", Deadline = DateTime.UtcNow.AddDays(30), CourseId = 1 }
         };
     }
 }

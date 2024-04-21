@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Moodle-Clone.Application\MoodleClone.Application.csproj" />
     <ProjectReference Include="..\Moodle-Clone.Infrastructure\MoodleClone.Infrastructure.csproj" />
   </ItemGroup>

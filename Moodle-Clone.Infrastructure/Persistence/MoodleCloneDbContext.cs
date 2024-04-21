@@ -7,7 +7,7 @@ namespace MoodleClone.Infrastructure.Persistence;
 internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> options)
     : IdentityDbContext<User>(options)
 {
-    internal DbSet<Repository> Repositories { get; set; }
+    internal DbSet<Course> Courses { get; set; }
     internal DbSet<Assignment> Assignments { get; set; }
     internal DbSet<Submission> Submissions { get; set; }
 
@@ -15,10 +15,10 @@ internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> optio
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Repository>()
+        modelBuilder.Entity<Course>()
             .HasMany(r => r.Assignments)
-            .WithOne(a => a.Repository)
-            .HasForeignKey(a => a.RepositoryId);
+            .WithOne(a => a.Course)
+            .HasForeignKey(a => a.CourseId);
 
         modelBuilder.Entity<Assignment>()
             .HasMany(a => a.Submissions)
@@ -26,7 +26,7 @@ internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> optio
             .HasForeignKey(s => s.AssignmentId);
 
         modelBuilder.Entity<User>()
-            .HasMany(o => o.OwnedRepositories)
+            .HasMany(o => o.OwnedCourses)
             .WithOne(r => r.Owner)
             .HasForeignKey(r => r.OwnerId);
     }
