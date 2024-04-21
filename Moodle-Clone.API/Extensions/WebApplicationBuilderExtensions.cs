@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using MoodleClone.API.Middlewares;
 //using Serilog;
 
 namespace MoodleClone.API.Extensions
@@ -30,8 +31,8 @@ namespace MoodleClone.API.Extensions
             });
 
             builder.Services.AddEndpointsApiExplorer();
-            /*builder.Services.AddScoped<ErrorHandlingMiddleware>();
-            builder.Services.AddScoped<RequestTimeLoggingMiddleware>();*/
+            builder.Services.AddScoped<ErrorHandlingMiddleware>();
+            /*builder.Services.AddScoped<RequestTimeLoggingMiddleware>();*/
 
 
             /*builder.Host.UseSerilog((context, configuration) =>

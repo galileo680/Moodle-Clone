@@ -1,4 +1,5 @@
 using MoodleClone.API.Extensions;
+using MoodleClone.API.Middlewares;
 using MoodleClone.Application.Extensions;
 using MoodleClone.Domain.Entities;
 using MoodleClone.Infrastructure.Extensions;
@@ -25,6 +26,8 @@ var seeder = scope.ServiceProvider.GetRequiredService<IRepositorySeeder>();
 await seeder.Seed();*/
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

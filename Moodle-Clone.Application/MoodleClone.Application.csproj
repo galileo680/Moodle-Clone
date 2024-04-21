@@ -14,7 +14,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Repositories\Queries\" />
+    <Folder Include="Courses\Queries\" />
   </ItemGroup>
 
 
