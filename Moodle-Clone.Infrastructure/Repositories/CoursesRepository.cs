@@ -11,7 +11,7 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
     {
         dbContext.Courses.Add(entity);
         await dbContext.SaveChangesAsync();
-        return entity.Id;
+        return entity.CourseId;
     }
 
     public async Task Delete(Course entity)
@@ -31,7 +31,7 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
         var repository = await dbContext.Courses
             .Include(r => r.Assignments)
             .ThenInclude(a => a.Submissions)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.CourseId == id);
         return repository;
     }
 
