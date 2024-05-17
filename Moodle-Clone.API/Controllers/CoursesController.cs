@@ -1,7 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MoodleClone.Application.Courses.Commands.DeleteCourse;
+using MoodleClone.Application.Courses.Commands.UpdateCourse;
+using MoodleClone.Application.Courses.Queries;
 using MoodleClone.Application.Repositories.Commands.CreateCourse;
+using MoodleClone.Application.Repositories.Dtos;
 
 namespace MoodleClone.API.Controllers;
 
@@ -9,6 +12,13 @@ namespace MoodleClone.API.Controllers;
 [Route("api/[controller]")]
 public class CoursesController(IMediator mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CourseDto>>> GetAll()
+    {
+        var courses = await mediator.Send(new GetAllCoursesQuery());
+        return Ok(courses);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourse([FromRoute] int id)
     {
@@ -24,4 +34,15 @@ public class CoursesController(IMediator mediator) : ControllerBase
         return Created();
         //return CreatedAtAction(nameof(GetById), new { id }, null);
     }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdateCourse([FromRoute] int id, UpdateCourseCommand command)
+    {
+        command.CourseId = id;
+        await mediator.Send(command);
+
+        return NoContent();
+    }
+
+
 }
