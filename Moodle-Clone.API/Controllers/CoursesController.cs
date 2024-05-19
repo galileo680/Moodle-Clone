@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoodleClone.Application.Courses.Commands.DeleteCourse;
 using MoodleClone.Application.Courses.Commands.UpdateCourse;
@@ -10,9 +11,11 @@ namespace MoodleClone.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class CoursesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<CourseDto>>> GetAll()
     {
         var courses = await mediator.Send(new GetAllCoursesQuery());

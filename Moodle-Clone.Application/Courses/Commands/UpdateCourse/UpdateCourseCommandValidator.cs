@@ -1,5 +1,4 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace MoodleClone.Application.Courses.Commands.UpdateCourse;
 

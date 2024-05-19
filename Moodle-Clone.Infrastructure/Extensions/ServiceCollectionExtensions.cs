@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using MoodleClone.Infrastructure.Seeder;
 using MoodleClone.Domain.Repositories;
 using MoodleClone.Infrastructure.Repositories;
+using MoodleClone.Domain.Interfaces;
+using MoodleClone.Infrastructure.Authorization.Services;
 
 
 namespace MoodleClone.Infrastructure.Extensions;
@@ -32,5 +34,6 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ICourseSeeder, CourseSeeder>();
         services.AddScoped<ICoursesRepository, CoursesRepository>();
+        services.AddScoped<ICourseAuthorizationService, CourseAuthorizationService>();
     }
 }
