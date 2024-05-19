@@ -18,6 +18,16 @@ builder.AddPresentation();
 builder.Services.AddAplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin();
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 /*var scope = app.Services.CreateScope();
@@ -41,7 +51,7 @@ app.UseHttpsRedirection();
     .MapIdentityApi<User>();*/
 app.MapIdentityApi<User>();
 
-
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
