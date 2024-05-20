@@ -20,11 +20,12 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddPolicy("MyCorsPolicy", policy =>
     {
-        builder.AllowAnyOrigin();
-        builder.AllowAnyMethod();
-        builder.AllowAnyHeader();
+        policy.WithOrigins("https://localhost:7066")
+              .AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -37,6 +38,8 @@ await seeder.Seed();*/
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
+app.UseCors("MyCorsPolicy");
 
 if (app.Environment.IsDevelopment())
 {
@@ -51,7 +54,6 @@ app.UseHttpsRedirection();
     .MapIdentityApi<User>();*/
 app.MapIdentityApi<User>();
 
-app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

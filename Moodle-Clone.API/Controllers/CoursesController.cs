@@ -6,6 +6,7 @@ using MoodleClone.Application.Courses.Commands.UpdateCourse;
 using MoodleClone.Application.Courses.Queries;
 using MoodleClone.Application.Repositories.Commands.CreateCourse;
 using MoodleClone.Application.Repositories.Dtos;
+using MoodleClone.Domain.Constants;
 
 namespace MoodleClone.API.Controllers;
 
@@ -23,6 +24,7 @@ public class CoursesController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = UserRoles.Teacher)]
     public async Task<IActionResult> DeleteCourse([FromRoute] int id)
     {
         await mediator.Send(new DeleteCourseCommand(id));
@@ -31,6 +33,7 @@ public class CoursesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = UserRoles.Teacher)]
     public async Task<IActionResult> CreateCourse(CreateCourseCommand command)
     {
         int id = await mediator.Send(command);
@@ -39,6 +42,7 @@ public class CoursesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = UserRoles.Teacher)]
     public async Task<IActionResult> UpdateCourse([FromRoute] int id, UpdateCourseCommand command)
     {
         command.CourseId = id;
