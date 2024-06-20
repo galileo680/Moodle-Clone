@@ -34,6 +34,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ICourseSeeder, CourseSeeder>();
         services.AddScoped<ICoursesRepository, CoursesRepository>();
+        services.AddScoped<IAssignmentsRepository, AssignmentsRepository>();
         services.AddScoped<ICourseAuthorizationService, CourseAuthorizationService>();
     }
 }

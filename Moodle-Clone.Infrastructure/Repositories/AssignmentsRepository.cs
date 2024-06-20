@@ -24,7 +24,7 @@ internal class AssignmentsRepository(MoodleCloneDbContext dbContext) : IAssignme
     public async Task<IEnumerable<Assignment>> GetAllAsync()
     {
         return await dbContext.Assignments
-            .Include(a => a.Course)
+            //.Include(a => a.Course)
             .Include(a => a.Submissions)
             .ToListAsync();
     }
@@ -32,7 +32,7 @@ internal class AssignmentsRepository(MoodleCloneDbContext dbContext) : IAssignme
     public async Task<Assignment?> GetByIdAsync(int id)
     {
         return await dbContext.Assignments
-            .Include(a => a.Course)
+            //.Include(a => a.Course)
             .Include(a => a.Submissions)
             .FirstOrDefaultAsync(a => a.AssignmentId == id);
     }
