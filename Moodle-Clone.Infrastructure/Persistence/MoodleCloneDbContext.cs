@@ -42,6 +42,20 @@ internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> optio
         .WithMany(s => s.CoursesEnrolled)
         .UsingEntity(j => j.ToTable("CourseStudents")); // Nazwa tabeli join
 
+        // Configure Course-PendingStudent many-to-many relationship
+        modelBuilder.Entity<Course>()
+            .HasMany(c => c.PendingStudents)
+            .WithMany()
+            .UsingEntity<Dictionary<string, object>>(
+                "CoursePendingStudent",
+                j => j.HasOne<User>().WithMany().HasForeignKey("UserId"),
+                j => j.HasOne<Course>().WithMany().HasForeignKey("CourseId"),
+                j =>
+                {
+                    j.ToTable("CoursePendingStudents");
+                });
+
+
         // Relacje dla Assignment
         modelBuilder.Entity<Assignment>()
             .HasOne(a => a.Course)
