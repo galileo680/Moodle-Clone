@@ -32,6 +32,19 @@ internal class SubmissionRepository(MoodleCloneDbContext dbContext) : ISubmissio
             .FirstOrDefaultAsync(s => s.SubmissionId == id);
     }
 
+    public async Task<Submission> GetStudentSubmissionAsync(int assignmentId, string userId)
+    {
+        return await dbContext.Submissions
+            .FirstOrDefaultAsync(s => s.AssignmentId == assignmentId && s.UserId == userId);
+    }
+
+    public async Task<List<Submission>> GetSubmissionsByAssignmentIdAsync(int assignmentId)
+    {
+        return await dbContext.Submissions
+                .Where(s => s.AssignmentId == assignmentId)
+                .ToListAsync();
+    }
+
     public Task SaveChanges()
     {
         return dbContext.SaveChangesAsync();

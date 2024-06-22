@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoodleClone.Application.Submissions.Commands.CreateSubmission;
+using MoodleClone.Application.Submissions.Commands.Queries;
+using MoodleClone.Application.Submissions.Commands.Queries.GetStudentSubmission;
+using MoodleClone.Application.Submissions.Commands.Queries.GetSubmissions;
 using MoodleClone.Domain.Constants;
-using MoodleClone.Domain.Entities;
-using System.Security.Claims;
 
 namespace MoodleClone.API.Controllers
 {
@@ -13,6 +14,26 @@ namespace MoodleClone.API.Controllers
     [Authorize]
     public class SubmissionsController(IMediator mediator) : ControllerBase
     {
+        [HttpGet]
+        [Authorize(Roles = UserRoles.Teacher)]
+        public async Task<IActionResult> GetSubmissions([FromRoute] int assignmentId)
+        {
+            var query = new GetSubmissionsQuery { AssignmentId = assignmentId };
+            var submissions = await mediator.Send(query);
+            return Ok(submissions);
+        }
+
+        [HttpGet("mine")]
+        [Authorize(Roles = UserRoles.Student)]
+        public async Task<IActionResult> GetMySubmission([FromRoute] int courseId, [FromRoute] int assignmentId)
+        {
+            var query = new GetStudentSubmissionQuery { AssignmentId = assignmentId };
+            var submission = await mediator.Send(query);
+            if (submission == null)
+                return NotFound();
+
+            return Ok(submission);
+        }
 
         [HttpPost]
         [Authorize(Roles = UserRoles.Student)]
@@ -26,5 +47,7 @@ namespace MoodleClone.API.Controllers
             //return CreatedAtAction(nameof(GetSubmissionById), new { id }, null);
             return Created();
         }
+
+
     }
 }

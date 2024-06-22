@@ -8,5 +8,7 @@ public interface ISubmissionsRepository
     Task Delete(Submission entity);
     Task<IEnumerable<Submission>> GetAllAsync();
     Task<Submission?> GetByIdAsync(int id);
+    Task<List<Submission>> GetSubmissionsByAssignmentIdAsync(int assignmentId);
+    Task<Submission> GetStudentSubmissionAsync(int assignmentId, string userId);
     Task SaveChanges();
 }
