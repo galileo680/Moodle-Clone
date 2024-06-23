@@ -5,7 +5,7 @@ using MoodleClone.Infrastructure.Persistence;
 
 namespace MoodleClone.Infrastructure.Seeder;
 
-internal class MoodleCloneSeeder(MoodleCloneDbContext dbContext, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : ICourseSeeder
+internal class CourseSeeder(MoodleCloneDbContext dbContext, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) : ICourseSeeder
 {
     public async Task Seed()
     {
