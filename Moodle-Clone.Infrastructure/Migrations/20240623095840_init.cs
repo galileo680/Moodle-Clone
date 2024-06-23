@@ -98,7 +98,10 @@ namespace MoodleClone.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RepositoryId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -140,7 +143,7 @@ namespace MoodleClone.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Repositories",
+                name: "Courses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -151,33 +154,59 @@ namespace MoodleClone.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Repositories", x => x.Id);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Repositories_AspNetUsers_OwnerId",
+                        name: "FK_Courses_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Assignments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    AssignmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Deadline = table.Column<DateOnly>(type: "date", nullable: false),
-                    RepositoryId = table.Column<int>(type: "int", nullable: false)
+                    Deadline = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Assignments", x => x.Id);
+                    table.PrimaryKey("PK_Assignments", x => x.AssignmentId);
                     table.ForeignKey(
-                        name: "FK_Assignments_Repositories_RepositoryId",
-                        column: x => x.RepositoryId,
-                        principalTable: "Repositories",
+                        name: "FK_Assignments_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Accepted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseUsers_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -186,21 +215,27 @@ namespace MoodleClone.Infrastructure.Migrations
                 name: "Submissions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    SubmissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssignmentId = table.Column<int>(type: "int", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignmentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Submissions", x => x.Id);
+                    table.PrimaryKey("PK_Submissions", x => x.SubmissionId);
+                    table.ForeignKey(
+                        name: "FK_Submissions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Submissions_Assignments_AssignmentId",
                         column: x => x.AssignmentId,
                         principalTable: "Assignments",
-                        principalColumn: "Id",
+                        principalColumn: "AssignmentId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -237,9 +272,9 @@ namespace MoodleClone.Infrastructure.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_RepositoryId",
+                name: "IX_AspNetUsers_CourseId",
                 table: "AspNetUsers",
-                column: "RepositoryId");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -249,19 +284,34 @@ namespace MoodleClone.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignments_RepositoryId",
+                name: "IX_Assignments_CourseId",
                 table: "Assignments",
-                column: "RepositoryId");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Repositories_OwnerId",
-                table: "Repositories",
+                name: "IX_Courses_OwnerId",
+                table: "Courses",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseUsers_CourseId",
+                table: "CourseUsers",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseUsers_UserId",
+                table: "CourseUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_AssignmentId",
                 table: "Submissions",
                 column: "AssignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Submissions_UserId",
+                table: "Submissions",
+                column: "UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserClaims_AspNetUsers_UserId",
@@ -288,10 +338,10 @@ namespace MoodleClone.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_Repositories_RepositoryId",
+                name: "FK_AspNetUsers_Courses_CourseId",
                 table: "AspNetUsers",
-                column: "RepositoryId",
-                principalTable: "Repositories",
+                column: "CourseId",
+                principalTable: "Courses",
                 principalColumn: "Id");
         }
 
@@ -299,8 +349,8 @@ namespace MoodleClone.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Repositories_AspNetUsers_OwnerId",
-                table: "Repositories");
+                name: "FK_Courses_AspNetUsers_OwnerId",
+                table: "Courses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -318,6 +368,9 @@ namespace MoodleClone.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CourseUsers");
+
+            migrationBuilder.DropTable(
                 name: "Submissions");
 
             migrationBuilder.DropTable(
@@ -330,7 +383,7 @@ namespace MoodleClone.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Repositories");
+                name: "Courses");
         }
     }
 }

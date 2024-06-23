@@ -10,25 +10,11 @@ internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> optio
     internal DbSet<Course> Courses { get; set; }
     internal DbSet<Assignment> Assignments { get; set; }
     internal DbSet<Submission> Submissions { get; set; }
+    internal DbSet<CourseUser> CourseUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        /*modelBuilder.Entity<Course>()
-            .HasMany(r => r.Assignments)
-            .WithOne(a => a.Course)
-            .HasForeignKey(a => a.CourseId);
-
-        modelBuilder.Entity<Assignment>()
-            .HasMany(a => a.Submissions)
-            .WithOne(s => s.Assignment)
-            .HasForeignKey(s => s.AssignmentId);
-
-        modelBuilder.Entity<User>()
-            .HasMany(o => o.OwnedCourses)
-            .WithOne(r => r.Owner)
-            .HasForeignKey(r => r.OwnerId);*/
 
         // Relacje dla Course
         modelBuilder.Entity<Course>()
@@ -37,24 +23,22 @@ internal class MoodleCloneDbContext(DbContextOptions<MoodleCloneDbContext> optio
             .HasForeignKey(c => c.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Course>()
-        .HasMany(c => c.Students)
-        .WithMany(s => s.CoursesEnrolled)
-        .UsingEntity(j => j.ToTable("CourseStudents")); // Nazwa tabeli join
+        /*modelBuilder.Entity<CourseUser>().Navigation(x => x.User).AutoInclude();
+        modelBuilder.Entity<CourseUser>().Navigation(x => x.Course).AutoInclude();*/
 
-        // Configure Course-PendingStudent many-to-many relationship
-        modelBuilder.Entity<Course>()
-            .HasMany(c => c.PendingStudents)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "CoursePendingStudent",
-                j => j.HasOne<User>().WithMany().HasForeignKey("UserId"),
-                j => j.HasOne<Course>().WithMany().HasForeignKey("CourseId"),
-                j =>
-                {
-                    j.ToTable("CoursePendingStudents");
-                });
+        // Relacje dla CourseStudents
+        modelBuilder.Entity<CourseUser>()
+            .HasKey(cs => cs.Id);
 
+        modelBuilder.Entity<CourseUser>()
+            .HasOne(cs => cs.Course)
+            .WithMany(c => c.CourseStudents)
+            .HasForeignKey(cs => cs.CourseId);
+
+        modelBuilder.Entity<CourseUser>()
+            .HasOne(cs => cs.User)
+            .WithMany(u => u.CourseStudents)
+            .HasForeignKey(cs => cs.UserId);
 
         // Relacje dla Assignment
         modelBuilder.Entity<Assignment>()

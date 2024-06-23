@@ -7,16 +7,16 @@ using MoodleClone.Domain.Entities;
 using MoodleClone.Domain.Exceptions;
 using MoodleClone.Domain.Repositories;
 
-namespace MoodleClone.Application.Submissions.Commands.Queries.GetStudentSubmission;
+namespace MoodleClone.Application.Submissions.Queries.GetSubmissions;
 
-public class GetStudentSubmissionQueryHandler(ISubmissionsRepository submissionsRepository,
+public class GetSubmissionsQueryHandler(ISubmissionsRepository submissionsRepository,
     ICoursesRepository coursesRepository,
     IAssignmentsRepository assignmentsRepository,
     IUserStore<User> userStore,
     IUserContext userContext,
-    IMapper mapper) : IRequestHandler<GetStudentSubmissionQuery, SubmissionDto>
+    IMapper mapper) : IRequestHandler<GetSubmissionsQuery, IEnumerable<SubmissionDto>>
 {
-    public async Task<SubmissionDto> Handle(GetStudentSubmissionQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SubmissionDto>> Handle(GetSubmissionsQuery request, CancellationToken cancellationToken)
     {
         var user = userContext.GetCurrentUser();
 
@@ -26,10 +26,14 @@ public class GetStudentSubmissionQueryHandler(ISubmissionsRepository submissions
         var course = await coursesRepository.GetByIdAsync(assignment.CourseId);
         if (course == null) throw new NotFoundException(nameof(Course), assignment.CourseId.ToString());
 
-        var submission = await submissionsRepository.GetStudentSubmissionAsync(request.AssignmentId, user.Id);
-        if (submission == null)
-            throw new NotFoundException(nameof(Submission), $"{request.AssignmentId}, {user.Id}");
 
-        return mapper.Map<SubmissionDto>(submission);
+        var dbUser = await userStore.FindByIdAsync(user!.Id, cancellationToken);
+        if (user == null) throw new NotFoundException(nameof(User), dbUser.Id.ToString());
+
+        if (course.OwnerId != user.Id) throw new ForbidException();
+
+        var submissions = await submissionsRepository.GetSubmissionsByAssignmentIdAsync(request.AssignmentId);
+
+        return mapper.Map<List<SubmissionDto>>(submissions);
     }
 }

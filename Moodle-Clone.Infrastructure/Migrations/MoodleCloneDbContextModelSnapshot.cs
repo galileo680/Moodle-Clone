@@ -22,36 +22,6 @@ namespace MoodleClone.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CoursePendingStudent", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CourseId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CoursePendingStudents", (string)null);
-                });
-
-            modelBuilder.Entity("CourseUser", b =>
-                {
-                    b.Property<int>("CoursesEnrolledCourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CoursesEnrolledCourseId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("CourseStudents", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -216,11 +186,11 @@ namespace MoodleClone.Infrastructure.Migrations
 
             modelBuilder.Entity("MoodleClone.Domain.Entities.Course", b =>
                 {
-                    b.Property<int>("CourseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -234,11 +204,36 @@ namespace MoodleClone.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("CourseId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("MoodleClone.Domain.Entities.CourseUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CourseUsers");
                 });
 
             modelBuilder.Entity("MoodleClone.Domain.Entities.Submission", b =>
@@ -283,6 +278,9 @@ namespace MoodleClone.Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -335,6 +333,8 @@ namespace MoodleClone.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -344,36 +344,6 @@ namespace MoodleClone.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CoursePendingStudent", b =>
-                {
-                    b.HasOne("MoodleClone.Domain.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MoodleClone.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CourseUser", b =>
-                {
-                    b.HasOne("MoodleClone.Domain.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesEnrolledCourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MoodleClone.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -449,6 +419,25 @@ namespace MoodleClone.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("MoodleClone.Domain.Entities.CourseUser", b =>
+                {
+                    b.HasOne("MoodleClone.Domain.Entities.Course", "Course")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MoodleClone.Domain.Entities.User", "User")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MoodleClone.Domain.Entities.Submission", b =>
                 {
                     b.HasOne("MoodleClone.Domain.Entities.Assignment", "Assignment")
@@ -468,6 +457,13 @@ namespace MoodleClone.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MoodleClone.Domain.Entities.User", b =>
+                {
+                    b.HasOne("MoodleClone.Domain.Entities.Course", null)
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId");
+                });
+
             modelBuilder.Entity("MoodleClone.Domain.Entities.Assignment", b =>
                 {
                     b.Navigation("Submissions");
@@ -476,10 +472,16 @@ namespace MoodleClone.Infrastructure.Migrations
             modelBuilder.Entity("MoodleClone.Domain.Entities.Course", b =>
                 {
                     b.Navigation("Assignments");
+
+                    b.Navigation("CourseStudents");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("MoodleClone.Domain.Entities.User", b =>
                 {
+                    b.Navigation("CourseStudents");
+
                     b.Navigation("CoursesOwned");
 
                     b.Navigation("Submissions");

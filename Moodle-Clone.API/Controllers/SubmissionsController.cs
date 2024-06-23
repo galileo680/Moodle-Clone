@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoodleClone.Application.Submissions.Commands.CreateSubmission;
-using MoodleClone.Application.Submissions.Commands.Queries;
-using MoodleClone.Application.Submissions.Commands.Queries.GetStudentSubmission;
-using MoodleClone.Application.Submissions.Commands.Queries.GetSubmissions;
+using MoodleClone.Application.Submissions.Queries.GetStudentSubmission;
+using MoodleClone.Application.Submissions.Queries.GetSubmissions;
 using MoodleClone.Domain.Constants;
 
 namespace MoodleClone.API.Controllers
