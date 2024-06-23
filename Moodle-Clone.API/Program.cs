@@ -31,10 +31,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-/*var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<IRepositorySeeder>();
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<ICourseSeeder>();
 
-await seeder.Seed();*/
+await seeder.Seed();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ErrorHandlingMiddleware>();
