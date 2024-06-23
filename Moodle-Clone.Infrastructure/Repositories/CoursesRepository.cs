@@ -35,6 +35,15 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
         return repository;
     }
 
+    public async Task<string?> GetCourseOwnerSurnameByIdAsync(int courseId)
+    {
+        var course = await dbContext.Courses
+            .Include(c => c.Owner)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        return course?.Owner?.Surname;
+    }
+
     public Task SaveChanges()
         => dbContext.SaveChangesAsync();
 }

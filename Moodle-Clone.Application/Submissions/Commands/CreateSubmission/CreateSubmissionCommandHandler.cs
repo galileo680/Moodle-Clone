@@ -33,7 +33,12 @@ public class CreateSubmissionCommandHandler(ISubmissionsRepository submissionsRe
 
         var fileName = $"{Guid.NewGuid()}_{request.File.FileName}";
 
-        var directoryPath = Path.Combine(submissionStoragePath, $"{course.Owner.Surname}_{course.Name}", $"{user.Name}_{user.Surname}", $"Assignment_{request.AssignmentId}");
+
+        var ownerSurname = await coursesRepository.GetCourseOwnerSurnameByIdAsync(assignment.CourseId);
+
+
+
+        var directoryPath = Path.Combine(submissionStoragePath, $"{ownerSurname}_{course.Name}", $"{dbUser.Name}_{dbUser.Surname}", $"Assignment_{request.AssignmentId}");
         //var directoryPath = Path.Combine(submissionStoragePath, $"Assignment_{assignment.Name}");
 
         if (!Directory.Exists(directoryPath))
