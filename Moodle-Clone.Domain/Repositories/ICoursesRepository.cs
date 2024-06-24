@@ -11,5 +11,6 @@ public interface ICoursesRepository
     Task<string?> GetCourseOwnerSurnameByIdAsync(int courseId);
     Task<bool> IsStudentAcceptedInCourseAsync(string userId, int courseId);
     Task<IEnumerable<Course>> GetStudentCoursesAsync(string studentId);
+    Task<IEnumerable<Course>> GetTeacherCoursesAsync(string teacherId);
     Task SaveChanges();
 }

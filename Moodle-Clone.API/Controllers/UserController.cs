@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MoodleClone.Application.Repositories.Dtos;
 using MoodleClone.Application.Users.Commands.AssignUserRole;
 using MoodleClone.Application.Users.Commands.UnassignUserRole;
 using MoodleClone.Application.Users.Dtos;
 using MoodleClone.Application.Users.Queries.GetAllUsers;
 using MoodleClone.Application.Users.Queries.GetStudentCourses;
+using MoodleClone.Application.Users.Queries.GetTeacherCourses;
 using MoodleClone.Application.Users.Queries.GetUserRolesByEmail;
 using MoodleClone.Domain.Constants;
 using MoodleClone.Domain.Entities;
@@ -56,7 +58,7 @@ namespace MoodleClone.API.Controllers
             return NoContent();
         }
 
-
+        [AllowAnonymous]
         [HttpGet("roles")]
         public async Task<IActionResult> GetUserRolesByEmail([FromQuery] string email)
         {
@@ -67,7 +69,7 @@ namespace MoodleClone.API.Controllers
 
         [HttpGet("admin/Users")]
         [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
             var query = new GetAllUsersQuery();
             var users = await mediator.Send(query);
@@ -76,13 +78,21 @@ namespace MoodleClone.API.Controllers
 
         [HttpGet("student/courses")]
         [Authorize(Roles = UserRoles.Student)]
-        public async Task<ActionResult<IEnumerable<Course>>> GetStudentCourses()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetStudentCourses()
         {
             var query = new GetStudentCoursesQuery();
             var courses = await mediator.Send(query);
             return Ok(courses);
         }
 
+        [HttpGet("teacher/courses")]
+        [Authorize(Roles = UserRoles.Teacher)]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetTeacherCourses()
+        {
+            var query = new GetTeacherCoursesQuery();
+            var courses = await mediator.Send(query);
+            return Ok(courses);
+        }
 
     }
 }

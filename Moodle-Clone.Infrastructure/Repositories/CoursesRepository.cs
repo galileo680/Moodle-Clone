@@ -60,6 +60,15 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
         return courses;
     }
 
+    public async Task<IEnumerable<Course>> GetTeacherCoursesAsync(string teacherId)
+    {
+        var courses = await dbContext.Courses
+            .Where(c => c.OwnerId == teacherId)
+            .ToListAsync();
+
+        return courses;
+    }
+
     public Task SaveChanges()
         => dbContext.SaveChangesAsync();
 }
