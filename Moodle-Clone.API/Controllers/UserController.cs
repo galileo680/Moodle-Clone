@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using MoodleClone.Application.Users.Commands.AssignUserRole;
 using MoodleClone.Application.Users.Commands.UnassignUserRole;
 using MoodleClone.Application.Users.Dtos;
+using MoodleClone.Application.Users.Queries.GetAllUsers;
+using MoodleClone.Application.Users.Queries.GetUserRolesByEmail;
 using MoodleClone.Domain.Constants;
 using MoodleClone.Domain.Entities;
+using MoodleClone.Domain.Exceptions;
 
 namespace MoodleClone.API.Controllers
 {
@@ -50,6 +53,24 @@ namespace MoodleClone.API.Controllers
         {
             await mediator.Send(command);
             return NoContent();
+        }
+
+
+        [HttpGet("roles")]
+        public async Task<IActionResult> GetUserRolesByEmail([FromQuery] string email)
+        {
+            var query = new GetUserRolesByEmailQuery(email);
+            var roles = await mediator.Send(query);
+            return Ok(roles);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            var query = new GetAllUsersQuery();
+            var users = await mediator.Send(query);
+            return Ok(users);
         }
     }
 }
