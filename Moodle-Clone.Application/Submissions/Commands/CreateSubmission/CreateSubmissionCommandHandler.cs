@@ -29,14 +29,19 @@ public class CreateSubmissionCommandHandler(ISubmissionsRepository submissionsRe
 
 
         var dbUser = await userStore.FindByIdAsync(user!.Id, cancellationToken);
-        if (user == null) throw new NotFoundException(nameof(User), dbUser.Id.ToString());
+        if (dbUser == null) throw new NotFoundException(nameof(User), dbUser.Id.ToString());
+
+        // Sprawdzenie czy student jest zaakceptowany w kursie
+        var isAcceptedStudent = await coursesRepository.IsStudentAcceptedInCourseAsync(user.Id, course.Id);
+        if (!isAcceptedStudent)
+        {
+            throw new ForbidException();
+        }
+
 
         var fileName = $"{Guid.NewGuid()}_{request.File.FileName}";
 
-
         var ownerSurname = await coursesRepository.GetCourseOwnerSurnameByIdAsync(assignment.CourseId);
-
-
 
         var directoryPath = Path.Combine(submissionStoragePath, $"{ownerSurname}_{course.Name}", $"{dbUser.Name}_{dbUser.Surname}", $"Assignment_{request.AssignmentId}");
         //var directoryPath = Path.Combine(submissionStoragePath, $"Assignment_{assignment.Name}");

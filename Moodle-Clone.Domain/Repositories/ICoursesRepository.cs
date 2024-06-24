@@ -9,5 +9,6 @@ public interface ICoursesRepository
     Task<int> Create(Course entity);
     Task Delete(Course entity);
     Task<string?> GetCourseOwnerSurnameByIdAsync(int courseId);
+    Task<bool> IsStudentAcceptedInCourseAsync(string userId, int courseId);
     Task SaveChanges();
 }
