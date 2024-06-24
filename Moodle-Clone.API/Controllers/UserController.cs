@@ -6,6 +6,7 @@ using MoodleClone.Application.Users.Commands.AssignUserRole;
 using MoodleClone.Application.Users.Commands.UnassignUserRole;
 using MoodleClone.Application.Users.Dtos;
 using MoodleClone.Application.Users.Queries.GetAllUsers;
+using MoodleClone.Application.Users.Queries.GetStudentCourses;
 using MoodleClone.Application.Users.Queries.GetUserRolesByEmail;
 using MoodleClone.Domain.Constants;
 using MoodleClone.Domain.Entities;
@@ -64,7 +65,7 @@ namespace MoodleClone.API.Controllers
             return Ok(roles);
         }
 
-        [HttpGet]
+        [HttpGet("admin/Users")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
@@ -72,5 +73,16 @@ namespace MoodleClone.API.Controllers
             var users = await mediator.Send(query);
             return Ok(users);
         }
+
+        [HttpGet("student/courses")]
+        [Authorize(Roles = UserRoles.Student)]
+        public async Task<ActionResult<IEnumerable<Course>>> GetStudentCourses()
+        {
+            var query = new GetStudentCoursesQuery();
+            var courses = await mediator.Send(query);
+            return Ok(courses);
+        }
+
+
     }
 }

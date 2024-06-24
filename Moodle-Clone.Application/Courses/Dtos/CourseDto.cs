@@ -11,7 +11,7 @@ public class CourseDto
     public User Owner { get; set; } = default!;
     public string OwnerId { get; set; } = default!;
     public List<User> Students { get; set; } = new();*/
-    public int CourseId { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public string OwnerId { get; set; }

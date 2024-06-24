@@ -10,5 +10,6 @@ public interface ICoursesRepository
     Task Delete(Course entity);
     Task<string?> GetCourseOwnerSurnameByIdAsync(int courseId);
     Task<bool> IsStudentAcceptedInCourseAsync(string userId, int courseId);
+    Task<IEnumerable<Course>> GetStudentCoursesAsync(string studentId);
     Task SaveChanges();
 }

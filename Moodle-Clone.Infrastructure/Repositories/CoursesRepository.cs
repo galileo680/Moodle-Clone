@@ -50,6 +50,16 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
             .AnyAsync(cu => cu.UserId == userId && cu.CourseId == courseId && cu.Accepted);
     }
 
+    public async Task<IEnumerable<Course>> GetStudentCoursesAsync(string studentId)
+    {
+        var courses = await dbContext.CourseUsers
+            .Where(cu => cu.UserId == studentId && cu.Accepted)
+            .Select(cu => cu.Course)
+            .ToListAsync();
+
+        return courses;
+    }
+
     public Task SaveChanges()
         => dbContext.SaveChangesAsync();
 }
