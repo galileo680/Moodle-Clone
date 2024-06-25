@@ -69,6 +69,16 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
         return courses;
     }
 
+    public async Task<List<CourseUser>> GetPendingStudentsAsync(int courseId)
+    {
+        var pendingStudents = await dbContext.CourseUsers
+            .Where(cu => cu.CourseId == courseId && !cu.Accepted)
+            .Include(cu => cu.User)
+            .ToListAsync();
+
+        return pendingStudents;
+    }
+
     public Task SaveChanges()
         => dbContext.SaveChangesAsync();
 }

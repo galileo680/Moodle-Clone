@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoodleClone.Application.Courses.Queries;
+namespace MoodleClone.Application.Courses.Queries.GetAllCourses;
 
 internal class GetAllCoursesQueryHandler(IMapper mapper,
     ICoursesRepository coursesRepository) : IRequestHandler<GetAllCoursesQuery, IEnumerable<CourseDto>>

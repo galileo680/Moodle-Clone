@@ -5,7 +5,10 @@ using MoodleClone.Application.Courses.Commands.AcceptStudent;
 using MoodleClone.Application.Courses.Commands.DeleteCourse;
 using MoodleClone.Application.Courses.Commands.EnrollStudent;
 using MoodleClone.Application.Courses.Commands.UpdateCourse;
+using MoodleClone.Application.Courses.Dtos;
 using MoodleClone.Application.Courses.Queries;
+using MoodleClone.Application.Courses.Queries.GetAllCourses;
+using MoodleClone.Application.Courses.Queries.GetPendingStudents;
 using MoodleClone.Application.Repositories.Commands.CreateCourse;
 using MoodleClone.Application.Repositories.Dtos;
 using MoodleClone.Domain.Constants;
@@ -73,6 +76,15 @@ public class CoursesController(IMediator mediator) : ControllerBase
 
         await mediator.Send(command);
         return NoContent();
+    }
+
+    [HttpGet("{courseId}/pending-students")]
+    [Authorize(Roles = UserRoles.Teacher)]
+    public async Task<ActionResult<List<PendingStudentDto>>> GetPendingStudents(int courseId)
+    {
+        var query = new GetPendingStudentsQuery(courseId);
+        var result = await mediator.Send(query);
+        return Ok(result);
     }
 
 }
