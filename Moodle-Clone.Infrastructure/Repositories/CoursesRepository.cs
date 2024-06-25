@@ -79,6 +79,12 @@ internal class CoursesRepository(MoodleCloneDbContext dbContext) : ICoursesRepos
         return pendingStudents;
     }
 
+    public async Task<bool> IsStudentEnrolledAsync(int courseId, string userId)
+    {
+        return await dbContext.CourseUsers
+            .AnyAsync(cu => cu.CourseId == courseId && cu.UserId == userId);
+    }
+
     public Task SaveChanges()
         => dbContext.SaveChangesAsync();
 }

@@ -18,6 +18,13 @@ public class EntrollStudentCommandHandler(ICoursesRepository coursesRepository,
         var course = await coursesRepository.GetByIdAsync(request.CourseId);
         if (course == null) throw new NotFoundException(nameof(Course), request.CourseId.ToString());
 
+        var isStudentEnrolled = await coursesRepository.IsStudentEnrolledAsync(request.CourseId, user.Id);
+        if (isStudentEnrolled)
+        {
+            //throw new InvalidOperationException("Student is already enrolled in the course.");
+            throw new ForbidException();
+        }
+
         await courseEnrollmentsRepository.EnrollStudentAsync(request.CourseId, user.Id);
     }
 

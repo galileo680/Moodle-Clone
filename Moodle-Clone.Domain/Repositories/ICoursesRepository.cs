@@ -13,5 +13,6 @@ public interface ICoursesRepository
     Task<IEnumerable<Course>> GetStudentCoursesAsync(string studentId);
     Task<IEnumerable<Course>> GetTeacherCoursesAsync(string teacherId);
     Task<List<CourseUser>> GetPendingStudentsAsync(int courseId);
+    Task<bool> IsStudentEnrolledAsync(int courseId, string userId);
     Task SaveChanges();
 }
