@@ -43,7 +43,8 @@ internal class CourseEnrollmentsRepository(MoodleCloneDbContext dbContext) : ICo
         var student = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == studentId);
         if (student == null) throw new NotFoundException(nameof(User), studentId);
 
-        var courseStudent = dbContext.CourseUsers.FirstOrDefault(s => s.UserId == studentId);
+        var courseStudent = dbContext.CourseUsers.FirstOrDefault(s => s.UserId == studentId && s.CourseId == courseId);
+
         if (courseStudent != null)
         {
             //dbContext.CourseUsers.Remove(courseStudent);
