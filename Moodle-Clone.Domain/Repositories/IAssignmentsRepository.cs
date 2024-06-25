@@ -8,6 +8,7 @@ public interface IAssignmentsRepository
     Task Delete(Assignment entity);
     Task<IEnumerable<Assignment>> GetAllAsync();
     Task<Assignment?> GetByIdAsync(int id);
+    Task<List<Assignment>> GetAssignmentsWithMissedSubmissionsAsync();
     Task SaveChanges();
 
 

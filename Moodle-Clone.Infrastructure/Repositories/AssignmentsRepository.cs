@@ -37,6 +37,20 @@ internal class AssignmentsRepository(MoodleCloneDbContext dbContext) : IAssignme
             .FirstOrDefaultAsync(a => a.AssignmentId == id);
     }
 
+    public async Task<List<Assignment>> GetAssignmentsWithMissedSubmissionsAsync()
+    {
+
+        var assignments = await dbContext.Assignments
+            .Include(a => a.Course)
+                .ThenInclude(c => c.Students)
+            .Include(a => a.Submissions)
+            .Where(a => a.Deadline < DateTime.UtcNow)
+            .ToListAsync();
+
+        Console.WriteLine(assignments);
+        return assignments;
+    }
+
     public Task SaveChanges()
     {
         return dbContext.SaveChangesAsync();

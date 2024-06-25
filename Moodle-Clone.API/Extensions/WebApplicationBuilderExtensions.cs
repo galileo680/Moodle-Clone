@@ -1,6 +1,10 @@
 ﻿using Microsoft.OpenApi.Models;
 using MoodleClone.API.Middlewares;
-//using Serilog;
+using MoodleClone.Application.Jobs;
+using MoodleClone.Application.Services;
+using MoodleClone.Domain.Interfaces;
+using Quartz;
+
 
 namespace MoodleClone.API.Extensions
 {
@@ -32,12 +36,22 @@ namespace MoodleClone.API.Extensions
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
-            /*builder.Services.AddScoped<RequestTimeLoggingMiddleware>();*/
+
+            //Quartz
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionJobFactory();
+                var jobKey = new JobKey("NotifyTeachersJob");
+                q.AddJob<NotifyTeachersJob>(opts => opts.WithIdentity(jobKey));
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity("NotifyTeachersJob-trigger")
+                    .WithCronSchedule("0 0 0 * * ?")); // Codziennie o północy
+            });
+            builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 
-            /*builder.Host.UseSerilog((context, configuration) =>
-                configuration.ReadFrom.Configuration(context.Configuration)
-            );*/
         }
     }
 }
