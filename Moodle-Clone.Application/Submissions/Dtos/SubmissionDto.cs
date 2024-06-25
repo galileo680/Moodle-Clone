@@ -7,4 +7,5 @@ public class SubmissionDto
     public DateTime SubmittedAt { get; set; }
     public string UserId { get; set; }
     public int AssignmentId { get; set; }
+    public string FileName { get; set; }
 }

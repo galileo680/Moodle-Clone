@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MoodleClone.Application.Submissions.Dtos;
 using MoodleClone.Application.Users;
 using MoodleClone.Domain.Entities;
@@ -35,5 +36,7 @@ public class GetSubmissionsQueryHandler(ISubmissionsRepository submissionsReposi
         var submissions = await submissionsRepository.GetSubmissionsByAssignmentIdAsync(request.AssignmentId);
 
         return mapper.Map<List<SubmissionDto>>(submissions);
+
+
     }
 }

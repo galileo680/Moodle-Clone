@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoodleClone.Application.Submissions.Commands.CreateSubmission;
+using MoodleClone.Application.Submissions.Queries.DownloadSubmission;
 using MoodleClone.Application.Submissions.Queries.GetStudentSubmission;
 using MoodleClone.Application.Submissions.Queries.GetSubmissions;
 using MoodleClone.Domain.Constants;
+using MoodleClone.Domain.Entities;
 
 namespace MoodleClone.API.Controllers
 {
@@ -32,6 +34,21 @@ namespace MoodleClone.API.Controllers
                 return NotFound();
 
             return Ok(submission);
+        }
+
+        [HttpGet("{submissionId}/download")]
+        [Authorize(Roles = UserRoles.Teacher)]
+        public async Task<IActionResult> DownloadSubmission([FromRoute] int assignmentId, [FromRoute] int submissionId)
+        {
+
+            var query = new DownloadSubmissionQuery { SubmissionId = submissionId, AssignmentId = assignmentId };
+            var submission = await mediator.Send(query);
+
+            if (submission == null)
+                return NotFound();
+
+            var fileStream = new FileStream(submission.FilePath, FileMode.Open, FileAccess.Read);
+            return File(fileStream, "application/octet-stream", submission.FileName);
         }
 
         [HttpPost]
